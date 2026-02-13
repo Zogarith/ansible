@@ -1,0 +1,11 @@
+---
+- name: Deploy Dynamic Web Page
+  hosts: local
+  become: yes
+
+  tasks:
+    - name: Use Template to Create index.html
+      template:
+        src: index.html.j2
+        dest: /var/www/html/index.html
+      # The template module "renders" the variables before copying

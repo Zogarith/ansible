@@ -1,0 +1,11 @@
+<html>
+  <body>
+    <h1>Welcome to Shahid's Automated Server</h1>
+    <p>This server's name is: <b>{{ ansible_hostname }}</b></p>
+    <p>The IP address is: <b>{{ ansible_default_ipv4.address }}</b></p>
+    
+    {% if ansible_os_family == "Debian" %}
+      <p>System Status: <span style="color: green;">Debian-based (Secure)</span></p>
+    {% endif %}
+  </body>
+</html>

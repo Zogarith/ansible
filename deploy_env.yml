@@ -1,0 +1,20 @@
+---
+- name: Conditional Nginx Deployment
+  hosts: local
+  become: yes
+  vars:
+    # Change this to "production" to see the template logic flip!
+    environment_type: "production"
+
+  tasks:
+    - name: Deploy Conditional Config
+      template:
+        src: nginx_conditional.j2
+        dest: /etc/nginx/sites-available/default
+      notify: Reload Nginx # This is a "Handler"
+
+  handlers:
+    - name: Reload Nginx
+      service:
+        name: nginx
+        state: reloaded

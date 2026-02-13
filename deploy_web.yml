@@ -1,0 +1,39 @@
+---
+- name: Connect Domain to Web Files
+  hosts: local
+  become: yes
+  vars:
+    domain_name: "sygnels.com"  # Replace with your actual domain
+
+  tasks:
+    - name: Create Nginx configuration for the domain
+      copy:
+        dest: "/etc/nginx/sites-available/{{ domain_name }}"
+        content: |
+          server {
+              listen 80;
+              server_name {{ domain_name }} www.{{ domain_name }};
+
+              root /var/www/html;
+              index index.html index.htm;
+
+              location / {
+                  try_files $uri $uri/ =404;
+              }
+          }
+
+    - name: Enable the site by creating a symbolic link
+      file:
+        src: "/etc/nginx/sites-available/{{ domain_name }}"
+        dest: "/etc/nginx/sites-enabled/{{ domain_name }}"
+        state: link
+
+    - name: Remove default Nginx config to avoid conflict
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+
+    - name: Reload Nginx to apply changes
+      service:
+        name: nginx
+        state: reloaded
