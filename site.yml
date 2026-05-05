@@ -1,0 +1,10 @@
+---
+- name: Configure Web Server Infrastructure  # Fixes 'name[playbook]' - adds a description
+  hosts: all
+  become: true                                # SRE Practice: Explicitly define root escalation
+  
+  tasks:
+    - name: Ensure Nginx is installed        # Fixes 'name[task]'
+      ansible.builtin.apt:                   # Fixes 'fqcn' - uses Fully Qualified Collection Name
+        name: nginx
+        state: present                       # Fixes 'latest' - ensures environment consistency
