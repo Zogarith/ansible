@@ -22,7 +22,6 @@ jobs:
 
       - name: Run Ansible Lint
         run: ansible-lint .
-        continue-on-error: true # Prevents Exit Code 4 from stopping the whole pipeline
 
       - name: Run Syntax Check
         run: ansible-playbook site.yml --syntax-check
