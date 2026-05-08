@@ -18,3 +18,14 @@ services:
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     restart: always
+
+node-exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node-exporter
+    command:
+      - '--path.rootfs=/host'
+    network_mode: host
+    pid: host
+    restart: always
+    volumes:
+      - '/:/host:ro,rslave'
