@@ -13,19 +13,27 @@ services:
   grafana:
     image: grafana/grafana-oss:latest
     container_name: grafana
+    deploy:
+      resources:
+       limits:
+        memory: 256M
+        cpus: '0.50'
+       reservation:
+        memory: 128M
     ports:
       - "3000:3000"
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     restart: always
 
-node-exporter:
+  node-exporter:
     image: quay.io/prometheus/node-exporter:latest
     container_name: node-exporter
-    command:
-      - '--path.rootfs=/host'
+    # We remove the path.rootfs flag for now to ensure it starts in WSL
     network_mode: host
     pid: host
-    restart: always
+    restart: unless-stopped
     volumes:
-      - '/:/host:ro,rslave'
+      - '/proc:/host/proc:ro'
+      - '/sys:/host/sys:ro'
+      - '/:/rootfs:ro'
