@@ -18,7 +18,7 @@ services:
        limits:
         memory: 256M
         cpus: '0.50'
-       reservation:
+       reservations:
         memory: 128M
     ports:
       - "3000:3000"
@@ -37,3 +37,17 @@ services:
       - '/proc:/host/proc:ro'
       - '/sys:/host/sys:ro'
       - '/:/rootfs:ro'
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    ports:
+      - "8080:8080"
+    volumes:
+      - '/:/rootfs:ro'
+      - '/var/run:/var/run:ro'
+      - '/sys:/sys:ro'
+      - '/var/lib/docker/:/var/lib/docker:ro'
+      - '/dev/disk/:/dev/disk:ro'
+    devices:
+      - /dev/kmsg
